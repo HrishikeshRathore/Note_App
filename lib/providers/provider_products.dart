@@ -23,15 +23,30 @@ class ProviderProducts with ChangeNotifier{
 
   bool fetchingArchive = false;
 
-  void showArchive(bool archive) {
+  Future<void> showArchive(bool archive) async{
+
+    List<Map<String, dynamic>> listOfNotes = await DatabaseNote.getNotes();
+    _items = listOfNotes.map((note) => Product(
+      id: note['id'],
+      title: note['title'],
+      description: note['description'],
+      date: note['date'],
+      archive: note['archive'] == 1 ? true : false,
+    )
+    ).toList();
+
+
+    // allItems = [..._items];
+    // _items = _items.where((element) => element.archive == true);
 
     if(archive){
-      var archiveItems = [...allItems].where((element) => element.archive == true).toList();
+     // print(allItems[0].archive);
+      var archiveItems = [..._items].where((element) => element.archive == true).toList();
       _items = archiveItems;
       fetchingArchive = true;
     }
     else{
-      _items = [...allItems].where((element) => element.archive == false).toList();
+      _items = [..._items].where((element) => element.archive == false).toList();
       fetchingArchive = false;
     }
     notifyListeners();
@@ -48,7 +63,10 @@ class ProviderProducts with ChangeNotifier{
     
 
     await DatabaseNote.updateNote(productToArchive);
+    // allItems = [..._items];
+
     _items.removeAt(productIndex);
+
     notifyListeners();
 
   }
@@ -66,8 +84,20 @@ class ProviderProducts with ChangeNotifier{
   }
 
 
-  Product findProduct(String id){
-    return items.firstWhere((element) => element.id == id);
+  Future<Product> findProduct(String id) async{
+    //
+
+    List<Map<String, dynamic>> listOfNotes = await DatabaseNote.getNotes();
+    _items = listOfNotes.map((note) => Product(
+      id: note['id'],
+      title: note['title'],
+      description: note['description'],
+      date: note['date'],
+      archive: note['archive'] == 1 ? true : false,
+    )
+    ).toList();
+
+    return _items.firstWhere((element) => element.id == id);
   }
 
   void addProduct(Product product) async{
@@ -76,7 +106,7 @@ class ProviderProducts with ChangeNotifier{
         title: product.title,
         description: product.description,
         date: product.date,
-        archive: false,
+        archive: product.archive,
     );
     _items.insert(0, newProduct);
     await DatabaseNote.insertNote(newProduct);
@@ -94,10 +124,8 @@ class ProviderProducts with ChangeNotifier{
     )
     ).toList();
 
-    allItems = _items;
-    // _items = _items.where((element) => element.archive == false);
+    _items = _items.where((element) => element.archive == false).toList();
 
-    print(listOfNotes);
     notifyListeners();
   }
 

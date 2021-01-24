@@ -24,12 +24,14 @@ class _EditNoteState extends State<EditNote> {
       title: '',
       description: '',
       date: DateTime.now().toIso8601String(),
+      archive: false,
   );
 
   var _initValues = {
     'title': '',
     'description': '',
     'date': '',
+    'archive': false,
   };
 
   var _isInit = true;
@@ -37,13 +39,14 @@ class _EditNoteState extends State<EditNote> {
   @override
   void didChangeDependencies() {
     if(_isInit){
-      final productId = ModalRoute.of(context).settings.arguments as String;
-      if(productId != null){
-        _editedProduct = Provider.of<ProviderProducts>(context).findProduct(productId);
+      final product = ModalRoute.of(context).settings.arguments as Product;
+      if(product != null){
+        _editedProduct = product;
         _initValues = {
           'title': _editedProduct.title,
           'description': _editedProduct.description,
           'date': _editedProduct.date,
+          'archive' : _editedProduct.archive,
         };
       }
     }
@@ -113,6 +116,7 @@ class _EditNoteState extends State<EditNote> {
                     title: value,
                     description: _editedProduct.description,
                     date: _editedProduct.date,
+                    archive: _editedProduct.archive,
                   );
                 },
               ),
@@ -140,6 +144,7 @@ class _EditNoteState extends State<EditNote> {
                     title: _editedProduct.title,
                     description: value,
                     date: _editedProduct.date,
+                    archive: _editedProduct.archive,
                   );
                 },
               ),

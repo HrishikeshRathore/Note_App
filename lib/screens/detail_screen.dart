@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_notes/models/product.dart';
 import '../providers/provider_products.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +14,7 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
-    final productId = ModalRoute.of(context).settings.arguments as String;
-    final providerPack = Provider.of<ProviderProducts>(context).findProduct(productId);
+    final providerPack = ModalRoute.of(context).settings.arguments as Product;
 
     return Scaffold(
       appBar: AppBar(

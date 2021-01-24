@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:new_notes/models/product.dart';
 
 import '../providers/provider_products.dart';
 import '../providers/provider_products.dart';
@@ -72,7 +73,7 @@ class MainScreenWidget extends StatelessWidget {
               leading: IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(EditNote.routeName, arguments: id);
+                  Navigator.of(context).pushNamed(EditNote.routeName, arguments: Product(id: id, title: title, description: description, date: date, archive: archive));
                 },
                 alignment: Alignment.centerLeft,
               ),

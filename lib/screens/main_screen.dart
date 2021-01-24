@@ -42,8 +42,8 @@ class MainScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.notes),
               title: Text('All'),
-              onTap: () {
-                Provider.of<ProviderProducts>(context, listen: false).showArchive(false);
+              onTap: () async {
+                await Provider.of<ProviderProducts>(context, listen: false).showArchive(false);
                 Navigator.of(context).pop();
               },
             ),
@@ -53,8 +53,8 @@ class MainScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.archive),
               title: Text('Archived'),
-              onTap: () {
-                Provider.of<ProviderProducts>(context, listen: false).showArchive(true);
+              onTap: () async {
+                await Provider.of<ProviderProducts>(context, listen: false).showArchive(true);
                 Navigator.of(context).pop();
               },
             ),
@@ -86,7 +86,7 @@ class MainScreen extends StatelessWidget {
                   ),
                   itemBuilder: (ctx, i) => GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(DetailScreen.routeName, arguments: notes.items[i].id);
+                      Navigator.of(context).pushNamed(DetailScreen.routeName, arguments: notes.items[i]);
                     },
 
                     child: MainScreenWidget(
